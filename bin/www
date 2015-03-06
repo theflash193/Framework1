@@ -6,8 +6,8 @@
 
 var app = require('../app');
 var debug = require('debug')('jojo:server');
-var http = require('http');
-
+var fs = require('fs');
+var https = require('https');
 /**
  * Get port from environment and store in Express.
  */
@@ -19,7 +19,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer({
+  cert: fs.readFileSync(__dirname + '/my.crt'),
+  key: fs.readFileSync(__dirname + '/my.key')
+} ,app);
 
 /**
  * Listen on provided port, on all network interfaces.

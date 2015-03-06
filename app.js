@@ -4,13 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mysql = require('mysql');
-var passport = require('./auth');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var login = require('./routes/login');
-
 var app = express();
+var expressSession = require('express-session');
+var passport = require('passport');
+var passportlocal = require('passport-local');
+var passporthttp = require('passport-http');
+var mongoose = require('mongoose');
+// Define function
+function verifyCredentials(username, password, done)
+{
+    if ( username === password)
+        done(null, { id: username, name: username});
+    else
+        done(null, null);
+}
 
 // mysql connection
 var connection = mysql.createConnection({
@@ -22,6 +31,7 @@ var connection = mysql.createConnection({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -29,12 +39,38 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
+app.use(expressSession( {
+    secret: process.env.SESSION_SECRET || 'secret',
+    resave: false,
+    saveUninitialized: false
+    }));
 
 app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new passportlocal.Strategy(verifyCredentials));
+passport.use(new passporthttp.BasicStrategy(verifyCredentials));
 
+passport.serializeUser(function(user, done)
+{
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done)
+{
+    done(null, { id: id, name: id });
+});
+
+app.post('/login', passport.authenticate('local',
+    {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    })
+);
+app.use('/api', passport.authenticate('basic'));
 app.use('/', routes);
 app.use('/users', users);
-app.use('/login', login);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

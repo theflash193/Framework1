@@ -1,6 +1,9 @@
 extends layout
 
 block content
-
-	h1= title
-	p Welcome to #{title}
+	if isAuthenticated == false
+		a(href='/login') Log in here
+		p Lorem ipsum Incididunt sit eu irure dolor laborum dolor in ut veniam voluptate magna sit sed.
+	else
+		p Bienvenue cher #{user.name}
+		a(href='/logout') Log out here
