@@ -11,7 +11,6 @@ var expressSession = require('express-session');
 var passport = require('passport');
 var passportlocal = require('passport-local');
 var passporthttp = require('passport-http');
-var mongoose = require('mongoose');
 // Define function
 function verifyCredentials(username, password, done)
 {
@@ -20,12 +19,6 @@ function verifyCredentials(username, password, done)
     else
         done(null, null);
 }
-
-// mysql connection
-var connection = mysql.createConnection({
-    host : 'localhost',
-    user : ''
-})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
