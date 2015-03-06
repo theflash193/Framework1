@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var passport = require('./auth');
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var login = require('./routes/login');
+var login = require('./routes/sign');
+var admin = require('./routes/admin');
 
 var app = express();
 
@@ -33,8 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/login', login);
+app.use('/sign', sign);
+app.use('/admin', admin);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
