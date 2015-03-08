@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var passport = require('./auth');
 var routes = require('./routes/index');
-var login = require('./routes/sign');
+var sign = require('./routes/sign');
 var admin = require('./routes/admin');
 
 var app = express();

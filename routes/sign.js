@@ -4,10 +4,10 @@ var	passport = require('passport');
 
 /* GET login page. */
 router.get('', function(req, res, next) {
-  res.render('login');
+  res.render('sign');
 });
 
-router.post('login',
+router.post('sign',
 	passport.authenticate('local', {successRedirect: '/',
 	failureRedirect: '/login',
 	failureFlash: true}
