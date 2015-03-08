@@ -9,9 +9,10 @@ var passport = require('./auth');
 var routes = require('./routes/index');
 var sign = require('./routes/sign');
 var admin = require('./routes/admin');
-
+var easymongo = require('easymongo');
 var app = express();
 
+// console.log("%d", easymongo);
 // mysql connection
 var connection = mysql.createConnection({
     host : 'localhost',
