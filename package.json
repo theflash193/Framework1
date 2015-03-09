@@ -17,6 +17,8 @@
     "forms": "*",
     "sequelize": "*",
     "forms": "*",
-    "passport"
+    "bson": "*",
+    "passport": "*",
+    "mongoose": "3.8.0"
   }
 }

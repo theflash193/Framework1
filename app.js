@@ -4,19 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mysql = require('mysql');
 var passport = require('./auth');
 var routes = require('./routes/index');
 var sign = require('./routes/sign');
 var admin = require('./routes/admin');
-
+var mongoose = require('mongoose');
 var app = express();
-
-// mysql connection
-var connection = mysql.createConnection({
-    host : 'localhost',
-    user : ''
-})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
