@@ -16,6 +16,7 @@
     "easymongo": "~4.0.1",
     "forms": "*",
     "sequelize": "*",
-    "forms": "*"
+    "forms": "*",
+    "passport"
   }
 }
