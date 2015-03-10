@@ -8,6 +8,9 @@ var sign = require('./routes/sign');
 var admin = require('./routes/admin');
 var mongoose = require('mongoose');
 var path = require('path');
+var auth = require('./auth');
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
 var app = express();
 
 // view engine setup
@@ -21,10 +24,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(auth.VerifyCredentials));
 
+passport.serializerUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
+// Router path
 app.use('/', routes);
 app.use('/sign', sign);
 app.use('/admin', admin);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

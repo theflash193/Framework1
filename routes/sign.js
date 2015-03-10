@@ -9,6 +9,14 @@ router.get('', function(req, res, next) {
   res.render('sign');
 });
 
+router.post('',
+	passport.authenticate('local', {
+		sucessRedirect: '/',
+		failureRedirect: '.',
+		failureFlash: true
+	})
+);
+
 router.get('/new', function(req, res) {
 	res.render('sign/new', {form: form.UserForms.toHTML()});
 });
@@ -40,7 +48,6 @@ router.post('/new', function(req, res, form) {
 	    }
 	  });
 	});
-
 });
 
 module.exports = router;
