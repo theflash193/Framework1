@@ -10,17 +10,18 @@ var userForms = forms.create({
 		required: true,
 		validators: [validators.matchField('password')]
 	}),
-	personal: {
-		name: fields.string({required: true, label: 'Name'}),
-		email: fields.email({required: true, label: 'Email'}),
-		address: {
-			address1: fields.string({required: true, label: 'address1'}),
-			address2: fields.string({label: 'address2'}),
-			city: fields.string({required: true, label: 'City'}),
-			state: fields.string({required: true, label: 'State'}),
-			zip: fields.string({required: true, label: 'Zip'})
-		}
-	}
+	email: fields.email({required: true})
+	// personal: {
+	// 	name: fields.string({required: true, label: 'Name'}),
+	// 	email: fields.email({required: true, label: 'Email'}),
+	// 	address: {
+	// 		address1: fields.string({required: true, label: 'address1'}),
+	// 		address2: fields.string({label: 'address2'}),
+	// 		city: fields.string({required: true, label: 'City'}),
+	// 		state: fields.string({required: true, label: 'State'}),
+	// 		zip: fields.string({required: true, label: 'Zip'})
+	// 	}
+	// }
 });
 
 UserForms = exports.UserForms = userForms;

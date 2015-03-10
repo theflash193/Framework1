@@ -47,6 +47,7 @@ if (app.get('env') === 'development') {
             error: err
         });
     });
+    mongoose.connect('mongodb://localhost/user');
 }
 
 // production error handler

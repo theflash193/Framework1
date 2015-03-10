@@ -12,10 +12,5 @@ router.get('/new', function(req, res) {
 	res.render('sign/new', {form: form.UserForms.toHTML()});
 })
 
-router.post('/new',
-	passport.authenticate('local', {successRedirect: '/',
-	failureRedirect: '/login',
-	failureFlash: true}
-	));
-
+router.
 module.exports = router;
