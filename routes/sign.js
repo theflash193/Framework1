@@ -5,14 +5,15 @@ var form = require("../form/user");
 var UserManagement = require('user-management');
 
 /* GET login page. */
-router.get('', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('sign');
 });
 
-router.post('',
+router.post('/',
 	passport.authenticate('local', {
-		sucessRedirect: '/',
-		failureRedirect: '.',
+		sucessRedirect: 'fnefpinepifnienfpenpi',
+		sucessFlash: 'Welcome !',
+		failureRedirect: 'sign/new',
 		failureFlash: true
 	})
 );

@@ -11,6 +11,7 @@ var path = require('path');
 var auth = require('./auth');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
+var expressSession = require('express-session');
 var app = express();
 
 // view engine setup
@@ -24,12 +25,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.session({ secret: 'keyboard cat' }));
+app.use(expressSession( {
+    secret: process.env.SESSION_SECRET || 'secret',
+    resave: false,
+    saveUninitialized: false
+    }));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(auth.VerifyCredentials));
 
-passport.serializerUser(function(user, done) {
+passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
 
