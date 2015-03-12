@@ -13,6 +13,35 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var expressSession = require('express-session');
 var app = express();
+var UserManagement = require('user-management');
+var easymongo = require('easymongo');
+var users = new UserManagement();
+var mongo = new easymongo('mongodb://localhost/user_management');
+var USER = mongo.collection('users');
+
+function VerifyCredential(USERNAME, PASSWORD, done)
+{
+    users.load(function(err) {
+        users.authenticateUser(USERNAME, PASSWORD, function(err, result) {
+            if (err)
+                return (err);
+            if (!result.userExists)
+            {
+                console.log('user Invalid');
+                return done(null, false);
+            }
+            if (!result.passwordsMatch)
+            {
+                console.log('password Invalid');
+                return done(null, false);
+            }
+            USER.findOne({username : USERNAME}, function(err, new_user) {
+                console.log(new_user);
+                done(null, new_user);
+            })
+        });
+    });
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,16 +61,19 @@ app.use(expressSession( {
     }));
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(auth.VerifyCredentials));
+passport.use(new LocalStrategy(VerifyCredential));
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    // done(null, user.username);
+    users.getTokenForUsername(user.username, function(err, token) {
+        done(null, token);
+    })
 });
 
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
+passport.deserializeUser(function(token, done) {
+    users.getUsernameForToken(token, function(err, username) {
+        done(null, username);
+    })
 });
 
 // Router path

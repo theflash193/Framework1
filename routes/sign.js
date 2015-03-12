@@ -10,12 +10,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/',
-	passport.authenticate('local', {
-		sucessRedirect: 'fnefpinepifnienfpenpi',
-		sucessFlash: 'Welcome !',
-		failureRedirect: 'sign/new',
-		failureFlash: true
-	})
+	passport.authenticate('local', {failureRedirect: 'sign/new'}),
+	function(req, res) {
+		res.redirect('/');
+	}
 );
 
 router.get('/new', function(req, res) {
