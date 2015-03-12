@@ -8,7 +8,6 @@ var sign = require('./routes/sign');
 var admin = require('./routes/admin');
 var mongoose = require('mongoose');
 var path = require('path');
-var auth = require('./auth');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var expressSession = require('express-session');

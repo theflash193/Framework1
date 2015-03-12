@@ -1,4 +1,17 @@
 extends ../layout
 
 block content
-	h1 read
+	h1 List des utilisateurs
+	div.table-responsive
+		table(class="table")
+			thead
+				tr
+					th Username
+					th Password
+					th Email
+			tbody
+			each user in users
+				tr
+					th #{user.username}
+					th #{user.password}
+					th #{user.extras.email}
