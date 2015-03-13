@@ -24,9 +24,18 @@ function read(req, res)
 	})
 }
 
-function update(req, res)
+function edit(req, res)
 {
-	res.render('admin/update');
+	var id = req.params.id;
+	var db = new easymongo('mongodb://localhost/users_management');
+	var collection = db.collection('users');
+
+	collection.findById(id , function(err, user) {
+		if (err) {db.close(); return (err);}
+			var formEdit = form.UserForms.bind(user.value);
+			db.close();
+			res.render('admin/update', {form: formEdit.toHTML});
+	});
 }
 
 function delete_id(req, res)
@@ -57,7 +66,7 @@ console.log(UserManagement);
 /* GET admin page */
 router.get('/', read);
 router.get('/create/', create);
-router.get('/update', update);
+router.get('/edit/user/:id', edit);
 router.get('/delete/user/:name', delete_id);
 
 router.post('/create', function(req, res) {
@@ -89,4 +98,9 @@ router.post('/create', function(req, res) {
 	});
 })
 
+router.post('/update', function(req, res) {
+	var data = req.body;
+	var 
+
+})
 module.exports = router;
