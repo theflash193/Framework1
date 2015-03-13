@@ -20,7 +20,6 @@ function read(req, res)
 
 	users.find(function(err, result) {
 		if (err) return (err);
-		console.log(result);
 		res.render('admin/read', {users : result});
 	})
 }
@@ -30,20 +29,36 @@ function update(req, res)
 	res.render('admin/update');
 }
 
-function deletead(req, res)
+function delete_id(req, res)
 {
-	res.render('admin/delete');
+console.log(UserManagement);
+	var user = new UserManagement();
+	var username = req.params.name;
+
+	console.log(user);
+	user.load(function(err) {
+		if (err) {user.close(); return (err);}
+		// chargement de la db
+		user.userExists(username, function(err, exists) {
+			if (err) {user.close; return (err);}
+			if (!exists) {user.close; return (err);}
+			// on verifie que le user existe 
+			user.removeUser(username, function(err) {
+				if (err) {user.close(); return (err);}
+				console.log('suppression du user');
+				user.close();
+				res.redirect('/');
+			});
+		});
+	});
+
 }
 
 /* GET admin page */
-router.get('/', function(req, res) {
-	res.render('admin/admin');
-});
-
-router.get('/create', create);
-router.get('/read', read);
+router.get('/', read);
+router.get('/create/', create);
 router.get('/update', update);
-router.get('/delete', deletead);
+router.get('/delete/user/:name', delete_id);
 
 router.post('/create', function(req, res) {
 	var data = req.body;

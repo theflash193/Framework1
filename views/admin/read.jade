@@ -3,7 +3,7 @@ extends ../layout
 block content
 	h1 List des utilisateurs
 	div.table-responsive
-		table(class="table")
+		table(class="table-bordered")
 			thead
 				tr
 					th Username
@@ -12,6 +12,10 @@ block content
 			tbody
 			each user in users
 				tr
-					th #{user.username}
-					th #{user.password}
-					th #{user.extras.email}
+					td #{user.username}
+					td #{user.password}
+					td #{user.extras.email}
+					td 
+						a(href="delete/user/" + user.username, role="button", class="btn btn-default") delete
+					td
+						a(href="../admin/edit/" + user._id, role="button", class="btn btn-default") edit

@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var sign = require('./routes/sign');
 var admin = require('./routes/admin');
-var mongoose = require('mongoose');
 var path = require('path');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
@@ -99,7 +98,6 @@ if (app.get('env') === 'development') {
             error: err
         });
     });
-    mongoose.connect('mongodb://localhost/user');
 }
 
 // production error handler
