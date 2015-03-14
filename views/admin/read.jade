@@ -3,7 +3,7 @@ extends ../layout
 block content
 	h1 List des utilisateurs
 	div.table-responsive
-		table(class="table-bordered")
+		table(class="table-responsive")
 			thead
 				tr
 					th Username
@@ -18,4 +18,4 @@ block content
 					td 
 						a(href="delete/user/" + user.username, role="button", class="btn btn-default") delete
 					td
-						a(href="../admin/edit/" + user._id, role="button", class="btn btn-default") edit
+						a(href="admin/edit/" + user._id, role="button", class="btn btn-default") edit

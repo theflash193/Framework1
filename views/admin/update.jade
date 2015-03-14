@@ -1,4 +1,7 @@
 extends ../layout
 
 block content
-	p update
+	if (form !== 'undefined')
+		form(method='post')
+			!= form
+			input(type='submit')
