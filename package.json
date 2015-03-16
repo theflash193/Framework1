@@ -20,7 +20,6 @@
     "passport": "*",
     "user-management": "*",
     "express-session": "*",
-    "bson": "*",
-    "sha1": "*"
+    "bson": "*"
   }
 }

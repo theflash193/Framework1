@@ -3,7 +3,6 @@ var router = express.Router();
 var form = require("../form/user");
 var UserManagement = require('user-management');
 var easymongo = require('easymongo');
-var sha1 = require('sha1');
 
 /* function define */
 function create(req, res)
