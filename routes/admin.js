@@ -3,7 +3,7 @@ var router = express.Router();
 var form = require("../form/user");
 var UserManagement = require('user-management');
 var easymongo = require('easymongo');
-
+var sha1 = require('sha1');
 
 /* function define */
 function create(req, res)
@@ -17,24 +17,29 @@ function read(req, res)
 {
 	var mongo = new easymongo('mongodb://localhost/user_management');
 	var users = mongo.collection('users');
+	var options = {
+		sort: {
+			username: 1
+		}
+	}
 
-	users.find(function(err, result) {
-		if (err) return (err);
+	users.find({}, {sort: {username: 1}}, function(err, result) {
+		console.log(err);
+		if (err) {mongo.close();return (err);}
+		mongo.close();
 		res.render('admin/read', {users : result});
-	})
+	});
 }
 
 function edit(req, res)
 {
 	var id = req.params.id;
-	console.log(id);
 	var db = new easymongo('mongodb://localhost/user_management');
 	var collection = db.collection('users');
 
 	collection.findById(req.params.id , function(err, result) {
 		if (err) {db.close(); return (err);}
 			var formEdit = form.UserForms.bind(result);
-			console.log(formEdit);
 			db.close();
 			res.render('admin/update', {form: formEdit.toHTML()});
 	});
@@ -101,25 +106,32 @@ router.post('/create', function(req, res) {
 });
 
 router.post('/edit/:id', function(req, res) {
-	console.log(req.params.id);
+	var db = new easymongo('mongodb://localhost/user_management');
+	var collection = db.collection('users');
+	var user = new UserManagement();
 	var id = req.params.id;
 	var tmp = req.body;
-	var data = {
-		username: tmp.username,
-		password: tmp.password,
-		email: tmp.email
-	};
-	var db = new easymongo('mongodb://localhost/user_management');
-	var users = db.collection('users');
-	users.findById(id, function(err, result) {
-		if (err) { db.close(); return (err); }
-		users.update(id ,data, function(err, result) {
-			if (err) { db.close(); res.render('/edit/:id')};
-			console.log(result);
-			db.close();
-			res.redirect('/admin');
-		})
-	})
+
+	collection.findById(id, function(err, result) {
+		console.log('chargement du user');
+		if (err) { db.close(); return (err);}
+		var USERNAME = result.username;
+		user.load(function(err) {
+			console.log('chargement de la db');
+			if (err) { db.close(); user.close(); return (err);}
+			user.removeUser(result.username, function(err) {
+				if (err) { db.close(); user.close(); return (err);}
+				console.log('suppression de l\'utilisateur ');
+			});
+			user.createUser(USERNAME, tmp.password, {email: tmp.email}, function(err) {
+				if (err) { db.close(); user.close(); return (err);}
+				db.close();
+				user.close();
+				console.log('creation de l\'utilisateur');
+				res.redirect('/admin');
+			});
+		});
+	});
 });
 
 module.exports = router;

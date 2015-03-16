@@ -16,6 +16,6 @@ block content
 					td #{user.password}
 					td #{user.extras.email}
 					td 
-						a(href="delete/user/" + user.username, role="button", class="btn btn-default") delete
+						a(href="/delete/user/" + user.username, role="button", class="btn btn-default") delete
 					td
-						a(href="admin/edit/" + user._id, role="button", class="btn btn-default") edit
+						a(href="/admin/edit/" + user._id, role="button", class="btn btn-default") edit
