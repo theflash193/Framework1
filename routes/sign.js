@@ -3,6 +3,7 @@ var router = express.Router();
 var	passport = require('passport');
 var form = require("../form/user");
 var UserManagement = require('user-management');
+var email = require("../email/email");
 
 /* GET login page. */
 router.get('/', function(req, res, next) {
@@ -27,6 +28,7 @@ router.post('/new', function(req, res, form) {
 	var EXTRAS = {
 		email: data.email
 	};
+	var myEmail = email(data.email);
 
 	var users = new UserManagement();
 	users.load(function(err) {
@@ -42,6 +44,7 @@ router.post('/new', function(req, res, form) {
 	      users.createUser(USERNAME, PASSWORD, EXTRAS, function (err) {
 	        console.log('  User created');
 	        users.close();
+	        myEmail.SuccessMsg();
 	        res.redirect('.');
 	      });
 	    }

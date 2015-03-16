@@ -3,6 +3,7 @@ var router = express.Router();
 var form = require("../form/user");
 var UserManagement = require('user-management');
 var easymongo = require('easymongo');
+var email = require("../email/email");
 
 /* function define */
 function create(req, res)
@@ -50,7 +51,6 @@ console.log(UserManagement);
 	var user = new UserManagement();
 	var username = req.params.name;
 
-	console.log(user);
 	user.load(function(err) {
 		if (err) {user.close(); return (err);}
 		// chargement de la db
@@ -82,6 +82,7 @@ router.post('/create', function(req, res) {
 	var EXTRAS = {
 		email: data.email
 	};
+	var myEmail = email(data.email);
 
 	var users = new UserManagement();
 	users.load(function(err) {
@@ -97,6 +98,7 @@ router.post('/create', function(req, res) {
 	      users.createUser(USERNAME, PASSWORD, EXTRAS, function (err) {
 	        console.log('  User created');
 	        users.close();
+	        myEmail.SuccessMsg();
 	        res.redirect('.');
 	      });
 	    }
