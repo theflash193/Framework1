@@ -21,6 +21,7 @@
     "user-management": "*",
     "express-session": "*",
     "bson": "*",
-    "nodemailer": "*"
+    "nodemailer": "*",
+    "easyrole": "*"
   }
 }
