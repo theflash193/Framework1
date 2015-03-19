@@ -18,8 +18,13 @@ html
 						li
 							a(href="/admin") Administration
 			// Page Content
-			#page-content-fluid
+			//- conteneur principal de la page 
+			.container
+				.row
+					
+				.row
+					block content
+
+			footer(class="footer")
 				.container
-					.row
-						div.col-lg-9
-							block content
+					p(class="text-muted") powered by grass-kw

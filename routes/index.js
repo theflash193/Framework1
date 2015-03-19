@@ -8,7 +8,10 @@ router.get('/', function(req, res) {
 		res.redirect('/sign');
 	role = req.session.role;
 	console.log("role: %s", role);
-	res.render('index', {Role: role});
+	res.render('index', {
+		Role: role,
+		title: 'Intra'
+	});
 });
 
 router.get('/logout', function(req, res) {
