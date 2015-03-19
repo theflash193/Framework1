@@ -147,10 +147,19 @@ router.post('/role/:id', function(req, res) {
 
 	collection.findById(id, function(err, user) {
 		if (err) {db.close(); return (err)}
+		console.log("affichage user");
+		console.log(user);
 		collection.update(
 			{_id: id},
 			{
-				extras: {role: req.body.role}
+				$set:
+				{
+					extras:
+					{
+						email: user.extras.email,
+						role: req.body.role
+					}
+				}
 			}, function(err) {
 			if (err) {db.close(); return (err);}
 			db.close();
