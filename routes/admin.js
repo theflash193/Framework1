@@ -24,7 +24,6 @@ function read(req, res)
 	}
 
 	users.find({}, {sort: {username: 1}}, function(err, result) {
-		console.log(err);
 		if (err) {mongo.close();return (err);}
 		mongo.close();
 		res.render('admin/read', {users : result});
@@ -124,7 +123,7 @@ router.post('/edit/:id', function(req, res) {
 				if (err) { db.close(); user.close(); return (err);}
 				console.log('suppression de l\'utilisateur ');
 			});
-			user.createUser(USERNAME, tmp.password, {email: tmp.email}, function(err) {
+			user.createUser(USERNAME, tmp.password, {email: tmp.email, role:tmp.role}, function(err) {
 				if (err) { db.close(); user.close(); return (err);}
 				db.close();
 				user.close();
@@ -135,4 +134,30 @@ router.post('/edit/:id', function(req, res) {
 	});
 });
 
+router.get('/role/:id', function(req, res) {
+	res.render('admin/role');
+});
+
+router.post('/role/:id', function(req, res) {
+	var id = req.params.id;
+	var db = new easymongo('mongodb://localhost/user_management');
+	var collection = db.collection('users');
+
+	collection.findById(id, function(err, user) {
+		if (err) {db.close(); return (err)}
+		collection.update(
+			{_id: id},
+			{
+				$set: {
+					extras: {role: req.body.role}
+				}
+			}, function(err) {
+			if (err) {db.close(); return (err);}
+			db.close();
+			req.session.role = req.body.role; 
+			console.log("role: %s", req.session.role);
+			res.redirect('/admin');
+		});
+	})
+});
 module.exports = router;

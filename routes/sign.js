@@ -4,16 +4,30 @@ var	passport = require('passport');
 var form = require("../form/user");
 var UserManagement = require('user-management');
 var email = require("../email/email");
+var session = require('express-session');
+var easymongo = require('easymongo');
 
 /* GET login page. */
 router.get('/', function(req, res, next) {
   res.render('sign');
 });
 
-router.post('/',
-	passport.authenticate('local', {failureRedirect: 'sign/new'}),
+router.post('/', passport.authenticate('local', {failureRedirect: 'sign/new'}),
 	function(req, res) {
-		res.redirect('/');
+		var sess = req.session;
+		var db = new easymongo('mongodb://localhost/user_management');
+		var collection = db.collection('users');
+		var role;
+
+		console.log(req.body);
+		collection.findOne({username: req.body.username}, function(err, result) {
+			if (err) {db.close(); return (err);}
+			role = result.extras.role;
+			db.close();
+			sess.username = req.body.username;
+			sess.role = role;
+			res.redirect('/');
+		});
 	}
 );
 
@@ -26,7 +40,8 @@ router.post('/new', function(req, res, form) {
 	var USERNAME = data.username;
 	var PASSWORD = data.password;
 	var EXTRAS = {
-		email: data.email
+		email: data.email,
+		role: 'user'
 	};
 	var myEmail = email(data.email);
 

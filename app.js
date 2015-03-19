@@ -34,7 +34,6 @@ function VerifyCredential(USERNAME, PASSWORD, done)
                 return done(null, false);
             }
             USER.findOne({username : USERNAME}, function(err, new_user) {
-                console.log(new_user);
                 done(null, new_user);
             })
         });

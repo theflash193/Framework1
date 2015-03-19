@@ -1,21 +1,27 @@
 extends ../layout
 
 block content
+	a(href="/admin/create", class="btn btn-primary", role="button") ajouter un utilisateur
 	h1 List des utilisateurs
+
 	div.table-responsive
-		table(class="table-responsive")
+		table(class="table-bordered")
 			thead
 				tr
 					th Username
 					th Password
 					th Email
+					th Role
 			tbody
 			each user in users
 				tr
 					td #{user.username}
 					td #{user.password}
 					td #{user.extras.email}
+					td #{user.extras.role}
 					td 
 						a(href="/admin/delete/user/" + user.username, role="button", class="btn btn-default") delete
 					td
 						a(href="/admin/edit/" + user._id, role="button", class="btn btn-default") edit
+					td
+						a(href="/admin/role/" + user._id, role="button", class="btn btn-default") change role
