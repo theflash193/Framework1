@@ -19,7 +19,6 @@ router.post('/', passport.authenticate('local', {failureRedirect: 'sign/new'}),
 		var collection = db.collection('users');
 		var role;
 
-		console.log(req.body);
 		collection.findOne({username: req.body.username}, function(err, result) {
 			if (err) {db.close(); return (err);}
 			role = result.extras.role;

@@ -26,6 +26,7 @@ function read(req, res)
 	users.find({}, {sort: {username: 1}}, function(err, result) {
 		if (err) {mongo.close();return (err);}
 		mongo.close();
+		console.log(result);
 		res.render('admin/read', {users : result});
 	});
 }
@@ -79,7 +80,8 @@ router.post('/create', function(req, res) {
 	var USERNAME = data.username;
 	var PASSWORD = data.password;
 	var EXTRAS = {
-		email: data.email
+		email: data.email,
+		role: 'user'
 	};
 	var myEmail = email(data.email);
 
@@ -123,7 +125,7 @@ router.post('/edit/:id', function(req, res) {
 				if (err) { db.close(); user.close(); return (err);}
 				console.log('suppression de l\'utilisateur ');
 			});
-			user.createUser(USERNAME, tmp.password, {email: tmp.email, role:tmp.role}, function(err) {
+			user.createUser(USERNAME, tmp.password, {email: tmp.email, role: tmp.role}, function(err) {
 				if (err) { db.close(); user.close(); return (err);}
 				db.close();
 				user.close();
@@ -148,9 +150,7 @@ router.post('/role/:id', function(req, res) {
 		collection.update(
 			{_id: id},
 			{
-				$set: {
-					extras: {role: req.body.role}
-				}
+				extras: {role: req.body.role}
 			}, function(err) {
 			if (err) {db.close(); return (err);}
 			db.close();
@@ -160,4 +160,5 @@ router.post('/role/:id', function(req, res) {
 		});
 	})
 });
+
 module.exports = router;
