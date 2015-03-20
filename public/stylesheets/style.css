@@ -5,6 +5,40 @@
 	color: #aaa;
 	color: rgba(255,255,255,0.65);
 }
+
+.style2
+{
+	background: url('images/bgtr.svg') top right no-repeat,
+	url('images/bgbl.svg') bottom left no-repeat,
+	url('images/overlay.png'),
+	linear-gradient(45deg, #384955, #655361, #85505f);
+}
+
+.style1
+{
+	background: url('images/bgtr.svg') top right no-repeat,
+	 url('images/bgbl.svg') bottom left no-repeat,
+	 url('images/bgbl.svg') bottom left no-repeat,
+	 url('images/overlay.png'),
+	 linear-gradient(45deg, #b39c68, #a56365, #412e4c);
+}
+
+.style3 {
+  background: url('images/bgtr.svg') top right no-repeat,
+ url('images/bgbl.svg') bottom left no-repeat,
+ url('images/overlay.png'),
+ linear-gradient(45deg, #5f796b, #3a4e59, #2f394e);
+}
+
+/*full image background*/
+#full2 {
+    background : url("../images/tempesto.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
 /*Sign_in*/
 .login-container .login-main .form-inputs .login-title .sign_in
 {
@@ -66,20 +100,18 @@
 	overflow: scroll;
 }
 
-.container
+.spacer
 {
-	margin-right: 25px;
-	margin-left: 25px;
-	padding-top: 15px;
-	padding-bottom: 15px;
+	margin-top: 28px;
 }
-
+/*Footer*/
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  background-color: #f5f5f5;
+	margin-top: 20px;
+	margin-bottom: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #5f796b;
+	color: #fff;
 }
 
 container .text-muted {
@@ -88,4 +120,22 @@ container .text-muted {
 
 .text-muted {
 	color: #777;
+}
+
+.content {
+	background-color: #fff;
+	padding-right: 60px;
+	padding-left: 60px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	border-radius: 4px;
+}
+
+.nav>li>a {
+	color: #fff;
+}
+
+.navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #5F796B;
+    background-color: transparent;
 }

@@ -2,14 +2,13 @@ extends ../layout
 
 block content
 	.container
-		.row
-			h1 List des utilisateurs
-		.row
+		.jumbotron.spacer
+			h1 Panel d'administration
+
+		div.content.spacer
 			a(href="/admin/create", class="btn btn-primary", role="button") ajouter un utilisateur
-			
-	.container
-		.row
-			div.table-responsive
+			h1 Liste des utilisateurs		
+			div.table-responsive.spacer
 				table(class="table-bordered")
 					thead
 						tr
