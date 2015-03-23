@@ -13,27 +13,29 @@ var expressSession = require('express-session');
 var app = express();
 var UserManagement = require('user-management');
 var easymongo = require('easymongo');
-var users = new UserManagement();
 var mongo = new easymongo('mongodb://localhost/user_management');
 var USER = mongo.collection('users');
 
 function VerifyCredential(USERNAME, PASSWORD, done)
 {
+    var users = new UserManagement();
+
     users.load(function(err) {
         users.authenticateUser(USERNAME, PASSWORD, function(err, result) {
-            if (err)
-                return (err);
+            if (err) {users.close(); return (err);}
             if (!result.userExists)
             {
-                console.log('user Invalid');
+                users.close();
                 return done(null, false);
             }
             if (!result.passwordsMatch)
             {
-                console.log('password Invalid');
+                users.close();
                 return done(null, false);
             }
             USER.findOne({username : USERNAME}, function(err, new_user) {
+                users.close();
+                mongo.close();
                 done(null, new_user);
             })
         });
@@ -61,16 +63,30 @@ app.use(passport.session());
 passport.use(new LocalStrategy(VerifyCredential));
 
 passport.serializeUser(function(user, done) {
-    // done(null, user.username);
-    users.getTokenForUsername(user.username, function(err, token) {
-        done(null, token);
-    })
+    var users = new UserManagement();
+
+    users.load(function(err) {
+        if (err) {users.close(); return (err);}
+        users.getTokenForUsername(user.username, function(err, token) {
+            if (err) {users.close(); return (err);}
+            users.close();
+            done(null, token);
+        });
+    });
 });
 
 passport.deserializeUser(function(token, done) {
-    users.getUsernameForToken(token, function(err, username) {
-        done(null, username);
-    })
+    var users = new UserManagement();
+
+    users.load(function(err) {
+        if (err) {users.close(); return (err);}
+        users.getUsernameForToken(token, function(err, username) {
+            if (err) {users.close(); return (err);}
+            users.close();
+            done(null, username);
+        })
+    });
+
 });
 
 // Router path

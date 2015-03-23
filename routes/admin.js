@@ -6,6 +6,15 @@ var easymongo = require('easymongo');
 var email = require("../email/email");
 
 /* function define */
+function requireRole(role) {
+    return function(req, res, next) {
+        if(req.session.username && req.session.role === role)
+            next();
+        else
+            res.send(403);
+    }
+}
+
 function create(req, res)
 {
 	res.render('admin/create', {
@@ -55,8 +64,8 @@ console.log(UserManagement);
 		if (err) {user.close(); return (err);}
 		// chargement de la db
 		user.userExists(username, function(err, exists) {
-			if (err) {user.close; return (err);}
-			if (!exists) {user.close; return (err);}
+			if (err) {user.close(); return (err);}
+			if (!exists) {user.close(); return (err);}
 			// on verifie que le user existe 
 			user.removeUser(username, function(err) {
 				if (err) {user.close(); return (err);}
@@ -70,6 +79,7 @@ console.log(UserManagement);
 }
 
 /* GET admin page */
+router.all('*', requireRole('Admin'));
 router.get('/', read);
 router.get('/create/', create);
 router.get('/edit/:id', edit);

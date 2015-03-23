@@ -6,3 +6,4 @@ rbac['admin'].allow('*');
 
 rbac['users'].allow();
 
+module.exports = rbac;
