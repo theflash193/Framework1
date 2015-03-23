@@ -18,7 +18,7 @@ function requireRole(role) {
 function create(req, res)
 {
 	res.render('admin/create', {
-		form : form.UserForms.toHTML()}
+		form : form.UserForms.toHTML(form.bootstrapField)}
 		);
 }
 

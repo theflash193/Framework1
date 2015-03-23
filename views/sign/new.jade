@@ -1,7 +1,9 @@
 extends ../layout
 
 block content
-	if (form !== 'undefined')
-		form(method='post')
-			!= form
-			input(type='submit')
+	.container
+		.content.spacer
+			if (form !== 'undefined')
+				form(method='post')
+					!= form
+					input(type='submit')
