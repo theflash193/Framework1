@@ -91,7 +91,7 @@ router.post('/create', function(req, res) {
 	var PASSWORD = data.password;
 	var EXTRAS = {
 		email: data.email,
-		role: 'user'
+		role: 'User'
 	};
 	var myEmail = email(data.email);
 
@@ -173,8 +173,6 @@ router.post('/role/:id', function(req, res) {
 			}, function(err) {
 			if (err) {db.close(); return (err);}
 			db.close();
-			req.session.role = req.body.role; 
-			console.log("role: %s", req.session.role);
 			res.redirect('/admin');
 		});
 	})

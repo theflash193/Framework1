@@ -40,7 +40,7 @@ router.post('/new', function(req, res, form) {
 	var PASSWORD = data.password;
 	var EXTRAS = {
 		email: data.email,
-		role: 'user'
+		role: 'User'
 	};
 	var myEmail = email(data.email);
 
